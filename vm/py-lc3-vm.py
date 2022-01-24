@@ -9,6 +9,8 @@ from io import BytesIO
 UINT16_MAX = 0xFFFF
 g_memory = [0] * UINT16_MAX
 
+INT16_MAX = 0x7FFF
+
 R_R0 = 0
 R_R1 = 1
 R_R2 = 2
@@ -70,7 +72,7 @@ def update_flags(r: int) -> None:
     if g_reg[r] == 0:
         g_reg[R_COND] = FL_ZRO
     else:
-        g_reg[R_COND] = FL_NEG if (g_reg[r] >> 15 != 0) else FL_POS
+        g_reg[R_COND] = FL_NEG if g_reg[r] > INT16_MAX else FL_POS
 
 def swap16(x: int) -> int:
     if x < 0 or x > UINT16_MAX:
@@ -139,7 +141,7 @@ def mem_read(address: int) -> int:
     address &= UINT16_MAX
     if address == MR_KBSR:
         if check_key():
-            g_memory[MR_KBSR] = (1 << 15)
+            g_memory[MR_KBSR] = (INT16_MAX + 1)
             g_memory[MR_KBDR] = get_key()
         else:
             g_memory[MR_KBSR] = 0
