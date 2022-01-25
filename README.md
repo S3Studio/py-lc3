@@ -1,7 +1,7 @@
 # py-lc3
 
 ## vm
-Runtime for lc3 bin object.
+Runtime for lc3 bin object. Debugger included.
 
 Based on <https://justinmeiners.github.io/lc3-vm/>
 
