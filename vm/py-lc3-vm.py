@@ -103,8 +103,11 @@ if platform.system().lower() == 'windows':
     TattrMgr = TattrMgrNull
 
 else:
+    import select
+
     def check_key_nix() -> bool:
-        return len(sys.stdin.buffer.peek(1)) > 0
+        dr, _, _ = select.select([sys.stdin], [], [], 0)
+        return len(dr) > 0
 
     check_key = check_key_nix
 
